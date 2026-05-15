@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
+import { Commet } from "react-loading-indicators";
+import { Link } from "react-router";
 const AllFriend = () => {
     const [friends, setFriends] = useState([]);
+    const [loading, setLoading] =useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch("/friends.json");
             const data = await res.json();
-            console.log(data);
-            setFriends(data);
+               setTimeout(() => {
+                setFriends(data);
+                setLoading(false);
+            }, 1000);
         };
+
         fetchData();
 
     }, []);
+
+    if (loading) {
+        return <div className="flex justify-center"><Commet color="#086408" size="medium" text="" textColor="" />;</div>
+    }
     console.log(friends);
     return (
         <div className="bg-[#F8FAFC]">
@@ -19,27 +29,13 @@ const AllFriend = () => {
 
                 <p className="text-2xl font-bold ">Your Friends</p>
 
-                {/* <div className="  border border-amber-200 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 mb-30 cursor-pointer">
                     {
                         friends.map((friend, ind) => {
                             return (
                                
-                                <div key={ind}>
-                                    <img className="rounded-full w-20" src={friend.picture} alt="" />
-                                    <p>{friend.name}</p>
-                                </div>
-
-                            )
-                        })
-                    }
-                </div> */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 mb-30">
-                    {
-                        friends.map((friend, ind) => {
-                            return (
-                                /* w-60 bad diye w-full use korun */
-                                <div key={ind} className="bg-white  rounded-xl shadow-sm border border-gray-100     overflow-hidden flex flex-col pt-5">
+                                <Link 
+                                    to={`/friend/${friend.id}`} key={ind} className="bg-white  rounded-xl shadow-sm border border-gray-100     overflow-hidden flex flex-col pt-5">
                                     <div className="flex justify-center">
                                         <img
                                             src={friend.picture}
@@ -67,7 +63,7 @@ const AllFriend = () => {
                                         <p className="text-center text-sm">{friend.status}</p>
                                        
                                     </div>
-                                </div>
+                                </Link>
                             )
                         })
                     }

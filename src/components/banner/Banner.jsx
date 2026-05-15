@@ -27,7 +27,7 @@ const Banner = () => {
                 
                 
                 <div className="bg-white py-5 px-2 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center justify-center transition-hover hover:shadow-md">
-                    <h2 className="text-5xl font-bold text-[#244D3F] mb-4">10</h2>
+                    <h2 className="text-5xl font-bold text-[#244D3F] mb-4">12</h2>
                     <p className="text-gray-500 font-medium text-md">Total Friends</p>
                 </div>
 
