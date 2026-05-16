@@ -3,13 +3,13 @@ import { Commet } from "react-loading-indicators";
 import { Link } from "react-router";
 const AllFriend = () => {
     const [friends, setFriends] = useState([]);
-    const [loading, setLoading] =useState(true)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
             const res = await fetch("/friends.json");
             const data = await res.json();
-               setTimeout(() => {
+            setTimeout(() => {
                 setFriends(data);
                 setLoading(false);
             }, 1000);
@@ -19,10 +19,22 @@ const AllFriend = () => {
 
     }, []);
 
+    const getStatusColor = (status) => {
+
+        const s = status?.toLowerCase();
+
+
+        if (s === "almost-due") return "text-white bg-[#EFAD44]";
+        if (s === "overdue") return "text-white bg-[#EF4444]";
+        if (s === "on-track") return "text-white bg-[#244D3F]";
+
+        return "text-white bg-gray-400";
+    };
+
     if (loading) {
-        return <div className="flex justify-center"><Commet color="#086408" size="medium" text="" textColor="" />;</div>
+        return <div className="flex justify-center"><Commet color="#086408" size="medium" text="" textColor="" /></div>
     }
-    console.log(friends);
+
     return (
         <div className="bg-[#F8FAFC]">
             <div className="w-9/12 mx-auto pt-8 ">
@@ -33,8 +45,8 @@ const AllFriend = () => {
                     {
                         friends.map((friend, ind) => {
                             return (
-                               
-                                <Link 
+
+                                <Link
                                     to={`/friend/${friend.id}`} key={ind} className="bg-white  rounded-xl shadow-sm border border-gray-100     overflow-hidden flex flex-col pt-5">
                                     <div className="flex justify-center">
                                         <img
@@ -44,7 +56,7 @@ const AllFriend = () => {
                                     </div>
                                     <div className="p-5 flex flex-col grow">
                                         <h2 className="text-xl font-bold text-black mb-2 text-center">{friend.name}</h2>
-                                        <p className="text-center bg-amber-200 rounded-3xl">{friend.email} </p>
+                                        <p className="text-center rounded-3xl">{friend.email} </p>
                                         <p className="text-gray-500 text-sm mb-4 grow font-semibold text-center">
                                             <span className="">Last contact:</span> {friend.days_since_contact} d ago
                                         </p>
@@ -60,8 +72,13 @@ const AllFriend = () => {
                                                 ))
                                             }
                                         </div>
-                                        <p className="text-center text-sm">{friend.status}</p>
-                                       
+
+                                        <div className="flex justify-center">
+                                            <p className={`text-center text-sm rounded-4xl px-5 py-1 font-bold  ${getStatusColor(friend.status)}`}>
+                                                {friend.status}
+                                            </p>
+                                        </div>
+
                                     </div>
                                 </Link>
                             )
